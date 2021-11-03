@@ -36,6 +36,8 @@ public class PairCommand {
                         .executes(PairCommand::endVote)));
         builder.then(literal("list")
                 .executes(PairCommand::listPairing));
+        builder.then(literal("partner")
+                .executes(PairCommand::showPartner));
         builder.then(literal("reset")
                 .requires(requirePermission("commondestiny.paircommand"))
                 .executes(PairCommand::resetPairing));
@@ -125,6 +127,21 @@ public class PairCommand {
         return 0;
     }
 
+    private static int showPartner(CommandContext<CommandListenerWrapper> context) {
+        if (!(context.getSource().getBukkitSender() instanceof CraftPlayer)) {
+            return 0;
+        }
+        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        CraftPlayer sender = (CraftPlayer)context.getSource().getBukkitSender();
+        if (manager.hasPartner(sender)) {
+            Player partner = manager.getPartner(sender);
+            context.getSource().sendMessage(new ChatComponentText("あなたのペアは " + partner.getName() + " です"), false);
+        } else {
+            context.getSource().sendMessage(new ChatComponentText("あなたはぼっちです"), false);
+        }
+        return 0;
+    }
+
     private static int resetPairing(CommandContext<CommandListenerWrapper> context) {
         PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
         manager.reset();
@@ -137,7 +154,7 @@ public class PairCommand {
         CraftPlayer player1 = ArgumentEntity.e(context, "player1").getBukkitEntity();
         CraftPlayer player2 = ArgumentEntity.e(context, "player2").getBukkitEntity();
         if (player1.equals(player2)) {
-            context.getSource().sendMessage(new ChatComponentText("一人でペアになることはできません"), false);
+            context.getSource().sendMessage(new ChatComponentText("一人でペアをつくることはできません"), false);
             return 0;
         }
         if (manager.isPair(player1, player2)) {
