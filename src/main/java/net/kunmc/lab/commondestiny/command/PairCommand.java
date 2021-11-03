@@ -74,7 +74,7 @@ public class PairCommand {
             context.getSource().sendMessage(new ChatComponentText(ChatColor.RED + "投票が開始されていません"), false);
             return 0;
         }
-        Bukkit.broadcast(Component.text("==投票結果==").color(NamedTextColor.GREEN));
+        Bukkit.broadcast(Component.text("== 投票結果 ==").color(NamedTextColor.GREEN));
         List<PairResult> results = VoteSystem.getVoteInstance().matchResults();
         results.sort(Comparator.comparingInt(PairResult::ord)
                 .thenComparing(pair -> pair.voted() ? pair.player2.getUniqueId() : null, Comparator.nullsLast(Comparator.naturalOrder())));
@@ -124,7 +124,7 @@ public class PairCommand {
 
     private static int listPairing(CommandContext<CommandListenerWrapper> context) {
         PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
-        context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "==成立済みのペア=="), false);
+        context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "== 成立済みのペア =="), false);
         for (PairResult pair : manager.pairs()) {
             context.getSource().sendMessage(new ChatComponentText(pair.player1.getName() + ChatColor.GREEN + " <=> " + ChatColor.RESET + pair.player2.getName()), false);
         }
@@ -190,7 +190,7 @@ public class PairCommand {
     private static int showRemaining(CommandContext<CommandListenerWrapper> context) {
         PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
         List<Player> remaining = manager.remainingPlayers();
-        context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "==ぼっちのプレイヤー=="), false);
+        context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "== ぼっちのプレイヤー =="), false);
         for (Player player : remaining) {
             context.getSource().sendMessage(new ChatComponentText(player.getName()), false);
         }
