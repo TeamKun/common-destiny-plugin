@@ -49,22 +49,19 @@ public class VoteSystem {
 
     public List<PairResult> matchResults() {
         List<PairResult> results = new ArrayList<>();
-        Set<UUID> remainingPlayers = manager.remainingPlayers().stream()
-                .map(Player::getUniqueId)
-                .collect(Collectors.toSet());
+        Set<Player> remainingPlayers = new HashSet<>(manager.remainingPlayers());
         for (Map.Entry<Player, Player> entry : votes.entrySet()) {
             Player from = entry.getKey();
             Player to = entry.getValue();
-            remainingPlayers.remove(from.getUniqueId());
+            remainingPlayers.remove(from);
             if (!from.equals(votes.get(to))) {
                 results.add(new PairResult(from, to, false));
             } else if (to.getUniqueId().compareTo(from.getUniqueId()) < 0) {
                 results.add(new PairResult(from, to, true));
             }
         }
-        for (UUID uuid : remainingPlayers) {
-            Player player = Bukkit.getPlayer(uuid);
-            results.add(new PairResult(player, null, false));
+        for (Player remaining : remainingPlayers) {
+            results.add(new PairResult(remaining, null, false));
         }
         return results;
     }

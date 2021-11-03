@@ -18,11 +18,21 @@ public class ConfigCommand {
                 .requires(clw -> clw.getBukkitSender().hasPermission("commondestiny.configcommand"));
         builder.then(literal("reload").executes(ConfigCommand::reload));
         LiteralArgumentBuilder<CommandListenerWrapper> setBuilder = literal("set");
+        LiteralArgumentBuilder<CommandListenerWrapper> getBuilder = literal("get");
         for (String path : ConfigManager.getConfigPaths()) {
             setBuilder.then(literal(path).then(word("value").executes(context -> set(context, path))));
+            getBuilder.then(literal(path).executes(context -> get(context, path)));
         }
         builder.then(setBuilder);
+        builder.then(getBuilder);
         dispatcher.register(builder);
+    }
+
+    private static int get(CommandContext<CommandListenerWrapper> context, String path) {
+        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        String value = configManager.get(path);
+        context.getSource().sendMessage(new ChatComponentText(value), false);
+        return 0;
     }
 
     private static int set(CommandContext<CommandListenerWrapper> context, String path) {

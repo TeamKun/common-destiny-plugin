@@ -120,7 +120,7 @@ public class PairCommand {
 
     private static int listPairing(CommandContext<CommandListenerWrapper> context) {
         PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
-        context.getSource().sendMessage(new ChatComponentText("せいりつづみのぺあ"), false);
+        context.getSource().sendMessage(new ChatComponentText("せいりつずみのぺあ"), false);
         for (PairResult pair : manager.pairs()) {
             context.getSource().sendMessage(new ChatComponentText(pair.player1.getName() + " <=> " + pair.player2.getName()), false);
         }
