@@ -8,5 +8,3 @@ permissions:
     default: op
   commondestiny.paircommand:
     default: op
-  minecraft.command.pair:
-    default: true

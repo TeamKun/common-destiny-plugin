@@ -1,10 +1,9 @@
 package net.kunmc.lab.commondestiny;
 
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class VoteSystem {
     private static VoteSystem instance;
@@ -39,7 +38,7 @@ public class VoteSystem {
         for (Map.Entry<Player, Player> entry : votes.entrySet()) {
             if (entry.getValue().equals(removed)) {
                 Player player = entry.getKey();
-                player.sendMessage("とうひょうさきのぷれいやーがログアウトしました 再度投票してください");
+                player.sendMessage(ChatColor.GREEN + "投票先のプレイヤーがログアウトしました 再度投票してください");
                 removeVote.add(player);
             }
         }
