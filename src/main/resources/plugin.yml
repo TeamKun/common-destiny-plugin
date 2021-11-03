@@ -1,0 +1,12 @@
+name: CommonDestinyPlugin
+version: '${version}'
+main: net.kunmc.lab.commondestiny.CommonDestinyPlugin
+api-version: 1.16
+authors: [ Yu_212 ]
+permissions:
+  commondestiny.configcommand:
+    default: op
+  commondestiny.paircommand:
+    default: op
+  minecraft.command.pair:
+    default: true
