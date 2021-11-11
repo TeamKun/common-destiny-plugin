@@ -55,11 +55,11 @@ public class PairingManager {
         updatePairsCache();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.equals(player1)) {
-                player1.sendMessage(Component.text(player2.getName() + " とペアになったよ"));
+                player.sendMessage(Component.text(player2.getName() + " とペアになったよ"));
             } else if (player.equals(player2)) {
-                player2.sendMessage(Component.text(player1.getName() + " とペアになったよ"));
+                player.sendMessage(Component.text(player1.getName() + " とペアになったよ"));
             } else if (broadcast) {
-                Bukkit.broadcast(Component.text(player1.getName() + " と " + player2.getName() + " がペアになったよ"));
+                player.sendMessage(Component.text(player1.getName() + " と " + player2.getName() + " がペアになったよ"));
             }
         }
     }
@@ -73,11 +73,11 @@ public class PairingManager {
         partners.remove(player2);
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.equals(player1)) {
-                player1.sendMessage(Component.text(player2.getName() + " とのペアを解散したよ"));
+                player.sendMessage(Component.text(player2.getName() + " とのペアを解散したよ"));
             } else if (player.equals(player2)) {
-                player2.sendMessage(Component.text(player1.getName() + " とのペアを解散したよ"));
+                player.sendMessage(Component.text(player1.getName() + " とのペアを解散したよ"));
             } else if (broadcast) {
-                Bukkit.broadcast(Component.text(player1.getName() + " と " + player2.getName() + " をかいさんさせたよ"));
+                player.sendMessage(Component.text(player1.getName() + " と " + player2.getName() + " をかいさんさせたよ"));
             }
         }
     }
