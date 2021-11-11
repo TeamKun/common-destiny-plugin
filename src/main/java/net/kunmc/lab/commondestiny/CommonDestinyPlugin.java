@@ -21,7 +21,6 @@ public final class CommonDestinyPlugin extends JavaPlugin {
         configManager = new ConfigManager();
         configManager.load();
         CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer)Bukkit.getServer()).getServer().vanillaCommandDispatcher.a();
-        ConfigCommand.register(dispatcher);
         PairCommand.register(dispatcher);
         Bukkit.getPluginManager().registerEvents(new PairingListener(), this);
     }

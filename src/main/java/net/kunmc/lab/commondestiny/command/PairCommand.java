@@ -8,6 +8,7 @@ import net.kunmc.lab.commondestiny.CommonDestinyPlugin;
 import net.kunmc.lab.commondestiny.PairResult;
 import net.kunmc.lab.commondestiny.PairingManager;
 import net.kunmc.lab.commondestiny.VoteSystem;
+import net.kunmc.lab.commondestiny.config.ConfigCommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.server.v1_16_R3.ArgumentEntity;
@@ -28,6 +29,7 @@ import static net.kunmc.lab.commondestiny.command.CommandUtils.*;
 public class PairCommand {
     public static void register(CommandDispatcher<CommandListenerWrapper> dispatcher) {
         LiteralArgumentBuilder<CommandListenerWrapper> builder = literal("pair");
+        ConfigCommand.register(builder);
         builder.then(literal("vote")
                 .then(player("partner")
                         .executes(PairCommand::vote))

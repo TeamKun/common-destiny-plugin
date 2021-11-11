@@ -13,19 +13,19 @@ import static net.kunmc.lab.commondestiny.command.CommandUtils.literal;
 import static net.kunmc.lab.commondestiny.command.CommandUtils.word;
 
 public class ConfigCommand {
-    public static void register(CommandDispatcher<CommandListenerWrapper> dispatcher) {
-        LiteralArgumentBuilder<CommandListenerWrapper> builder = literal("cdconfig")
+    public static void register(LiteralArgumentBuilder<CommandListenerWrapper> builder) {
+        LiteralArgumentBuilder<CommandListenerWrapper> subCommand = literal("config")
                 .requires(clw -> clw.getBukkitSender().hasPermission("commondestiny.configcommand"));
-        builder.then(literal("reload").executes(ConfigCommand::reload));
+        subCommand.then(literal("reload").executes(ConfigCommand::reload));
         LiteralArgumentBuilder<CommandListenerWrapper> setBuilder = literal("set");
         LiteralArgumentBuilder<CommandListenerWrapper> getBuilder = literal("get");
         for (String path : ConfigManager.getConfigPaths()) {
             setBuilder.then(literal(path).then(word("value").executes(context -> set(context, path))));
             getBuilder.then(literal(path).executes(context -> get(context, path)));
         }
-        builder.then(setBuilder);
-        builder.then(getBuilder);
-        dispatcher.register(builder);
+        subCommand.then(setBuilder);
+        subCommand.then(getBuilder);
+        builder.then(subCommand);
     }
 
     private static int get(CommandContext<CommandListenerWrapper> context, String path) {
