@@ -179,7 +179,7 @@ public class PairCommand {
         PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
         List<Player> remaining = manager.remainingPlayers();
         Collections.shuffle(remaining);
-        for (int i = 0; i < remaining.size(); i += 2) {
+        for (int i = 0; i + 1 < remaining.size(); i += 2) {
             manager.form(remaining.get(i), remaining.get(i + 1), false);
         }
         int formed = remaining.size() / 2;

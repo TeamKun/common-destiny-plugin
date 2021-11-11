@@ -19,6 +19,7 @@ public class PairingManager {
     public void reset() {
         partners.clear();
         lastPartners.clear();
+        pairsCache = null;
     }
 
     public List<Player> remainingPlayers() {
