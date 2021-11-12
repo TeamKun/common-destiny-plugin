@@ -2,7 +2,6 @@ package net.kunmc.lab.commondestiny;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.kunmc.lab.commondestiny.command.PairCommand;
-import net.kunmc.lab.commondestiny.config.ConfigCommand;
 import net.kunmc.lab.commondestiny.config.ConfigManager;
 import net.minecraft.server.v1_16_R3.CommandListenerWrapper;
 import org.bukkit.Bukkit;
@@ -12,12 +11,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class CommonDestinyPlugin extends JavaPlugin {
     private static CommonDestinyPlugin instance;
     private PairingManager pairingManager;
+    private GlowingManager glowingManager;
     private ConfigManager configManager;
 
     @Override
     public void onEnable() {
         instance = this;
         pairingManager = new PairingManager();
+        glowingManager = new GlowingManager();
         configManager = new ConfigManager();
         configManager.load();
         CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer)Bukkit.getServer()).getServer().vanillaCommandDispatcher.a();
@@ -35,6 +36,10 @@ public final class CommonDestinyPlugin extends JavaPlugin {
 
     public PairingManager getPairingManager() {
         return pairingManager;
+    }
+
+    public GlowingManager getGlowingManager() {
+        return glowingManager;
     }
 
     public ConfigManager getConfigManager() {

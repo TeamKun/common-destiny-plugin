@@ -27,6 +27,7 @@ dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
     implementation 'org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT'
     implementation 'com.mojang:brigadier:1.0.18'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:4.7.0'
 }
 
 java {
