@@ -152,16 +152,18 @@ public class PairingListener implements Listener {
             } else {
                 color = Color.RED;
             }
-            drawLine(location1, location2, color);
+            drawLine(location1, location2, color, event.getTickNumber() % 20);
+            drawLine(location2, location1, color, event.getTickNumber() % 20);
         }
     }
 
-    private void drawLine(Location loc1, Location loc2, Color color) {
+    private void drawLine(Location loc1, Location loc2, Color color, int tick) {
         double distance = loc1.distance(loc2);
         loc1 = loc1.clone();
-        int numParticle = Math.max(3, (int)(distance * 2));
-        Vector vector = loc2.clone().subtract(loc1).toVector().multiply(1.0 / (numParticle - 1));
+        int numParticle = Math.max(3, (int)distance);
+        Vector vector = loc2.clone().subtract(loc1).toVector().multiply(1.0 / numParticle);
         World world = loc1.getWorld();
+        loc1.add(vector.clone().multiply(tick / 20.0));
         Particle.DustOptions dustOptions = new Particle.DustOptions(color, 1);
         for (int i = 0; i < numParticle; i++) {
             world.spawnParticle(Particle.REDSTONE, loc1, 0, dustOptions);
