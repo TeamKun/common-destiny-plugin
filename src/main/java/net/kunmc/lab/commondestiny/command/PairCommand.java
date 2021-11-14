@@ -65,7 +65,7 @@ public class PairCommand {
             context.getSource().sendMessage(new ChatComponentText(ChatColor.RED + "投票がすでに開始されています"), false);
             return 0;
         }
-        Bukkit.broadcast(Component.text("投票を開始します").color(NamedTextColor.GREEN));
+        Bukkit.broadcast(Component.text("投票を開始します", NamedTextColor.GREEN));
         VoteSystem.start();
         return 0;
     }
@@ -76,19 +76,22 @@ public class PairCommand {
             context.getSource().sendMessage(new ChatComponentText(ChatColor.RED + "投票が開始されていません"), false);
             return 0;
         }
-        Bukkit.broadcast(Component.text("== 投票結果 ==").color(NamedTextColor.GREEN));
+        Bukkit.broadcast(Component.text("== 投票結果 ==", NamedTextColor.GREEN));
         List<PairResult> results = VoteSystem.getVoteInstance().matchResults();
         results.sort(Comparator.comparingInt(PairResult::ord)
                 .thenComparing(pair -> pair.voted() ? pair.player2.getUniqueId() : null, Comparator.nullsLast(Comparator.naturalOrder())));
         for (PairResult pair : results) {
-            String arrow = !pair.voted() || !pair.matched() ? ChatColor.YELLOW + " => " : ChatColor.GREEN + " <=> ";
+            String arrow = !pair.voted() || !pair.matched() ? ChatColor.YELLOW + " => " + ChatColor.RESET : ChatColor.GREEN + " <=> " + ChatColor.RESET;
             if (!pair.voted()) {
-                Bukkit.broadcast(Component.text(pair.player1.getName() + arrow + "未投票").color(NamedTextColor.GREEN));
+                Bukkit.broadcast(Component.text(pair.player1.getName() + arrow + "無投票"));
             } else if (!pair.matched()) {
-                Bukkit.broadcast(Component.text(pair.player1.getName() + arrow + pair.player2.getName()).color(NamedTextColor.GREEN));
+                Bukkit.broadcast(Component.text(pair.player1.getName() + arrow + pair.player2.getName()));
             } else {
-                Bukkit.broadcast(Component.text(pair.player1.getName() + arrow + pair.player2.getName()).color(NamedTextColor.GREEN));
+                Bukkit.broadcast(Component.text(pair.player1.getName() + arrow + pair.player2.getName()));
             }
+        }
+        if (results.isEmpty()) {
+            Bukkit.broadcast(Component.text("ペア成立なし", NamedTextColor.GREEN));
         }
         for (PairResult pair : results) {
             if (pair.matched()) {
@@ -126,8 +129,9 @@ public class PairCommand {
 
     private static int listPairing(CommandContext<CommandListenerWrapper> context) {
         PairingManager manager = CommonDestinyPlugin.getPairingManager();
-        context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "== 成立済みのペア =="), false);
-        for (PairResult pair : manager.pairs()) {
+        List<PairResult> pairs = manager.pairs();
+        context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "== 成立済みのペア (" + pairs.size() + " 人) =="), false);
+        for (PairResult pair : pairs) {
             context.getSource().sendMessage(new ChatComponentText(pair.player1.getName() + ChatColor.GREEN + " <=> " + ChatColor.RESET + pair.player2.getName()), false);
         }
         return 0;
@@ -185,14 +189,14 @@ public class PairCommand {
             manager.form(remaining.get(i), remaining.get(i + 1), false);
         }
         int formed = remaining.size() / 2;
-        Bukkit.broadcast(Component.text(ChatColor.GREEN + "" + formed + " 組のペアを成立させました"));
+        Bukkit.broadcast(Component.text(formed + " 組のペアを成立させました", NamedTextColor.GREEN));
         return 0;
     }
 
     private static int showRemaining(CommandContext<CommandListenerWrapper> context) {
         PairingManager manager = CommonDestinyPlugin.getPairingManager();
         List<Player> remaining = manager.remainingPlayers();
-        context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "== ぼっちのプレイヤー =="), false);
+        context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "== ぼっちのプレイヤー (" + remaining.size() + " 人) =="), false);
         for (Player player : remaining) {
             context.getSource().sendMessage(new ChatComponentText(player.getName()), false);
         }

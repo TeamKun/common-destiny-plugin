@@ -31,7 +31,7 @@ public class ConfigCommand {
     private static int get(CommandContext<CommandListenerWrapper> context, String path) {
         ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
         String value = configManager.get(path);
-        context.getSource().sendMessage(new ChatComponentText(value), false);
+        context.getSource().sendMessage(new ChatComponentText(path + " = " + value), false);
         return 0;
     }
 

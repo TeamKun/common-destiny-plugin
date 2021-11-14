@@ -3,12 +3,10 @@ package net.kunmc.lab.commondestiny;
 import net.kunmc.lab.commondestiny.config.ConfigManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -43,7 +41,7 @@ public class PairingManager {
         if (pairsCache == null) {
             updatePairsCache();
         }
-        return pairsCache;
+        return Collections.unmodifiableList(pairsCache);
     }
 
     public void form(Player player1, Player player2, boolean broadcast) {
@@ -60,11 +58,11 @@ public class PairingManager {
         updatePairsCache();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.equals(player1)) {
-                player.sendMessage(Component.text(player2.getName() + " とペアになったよ"));
+                player.sendMessage(Component.text(player2.getName() + ChatColor.GREEN + " とペアになったよ"));
             } else if (player.equals(player2)) {
-                player.sendMessage(Component.text(player1.getName() + " とペアになったよ"));
+                player.sendMessage(Component.text(player1.getName() + ChatColor.GREEN + " とペアになったよ"));
             } else if (broadcast) {
-                player.sendMessage(Component.text(player1.getName() + " と " + player2.getName() + " がペアになったよ"));
+                player.sendMessage(Component.text(player1.getName() + ChatColor.GREEN + " と " + ChatColor.RESET + player2.getName() + ChatColor.GREEN + " がペアになったよ"));
             }
         }
         GlowingManager glowingManager = CommonDestinyPlugin.getGlowingManager();
@@ -81,11 +79,11 @@ public class PairingManager {
         partners.remove(player2);
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.equals(player1)) {
-                player.sendMessage(Component.text(player2.getName() + " とのペアを解散したよ"));
+                player.sendMessage(Component.text(player2.getName() + ChatColor.GREEN + " とのペアを解散したよ"));
             } else if (player.equals(player2)) {
-                player.sendMessage(Component.text(player1.getName() + " とのペアを解散したよ"));
+                player.sendMessage(Component.text(player1.getName() + ChatColor.GREEN + " とのペアを解散したよ"));
             } else if (broadcast) {
-                player.sendMessage(Component.text(player1.getName() + " と " + player2.getName() + " を解散させたよ"));
+                player.sendMessage(Component.text(player1.getName() + ChatColor.GREEN + " と " + ChatColor.RESET + player2.getName() + ChatColor.GREEN + " のペアを解散させたよ"));
             }
         }
         GlowingManager glowingManager = CommonDestinyPlugin.getGlowingManager();
