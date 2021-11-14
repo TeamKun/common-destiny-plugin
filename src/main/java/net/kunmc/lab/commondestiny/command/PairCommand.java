@@ -71,7 +71,7 @@ public class PairCommand {
     }
 
     private static int endVote(CommandContext<CommandListenerWrapper> context) {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         if (!VoteSystem.isVoteStarted()) {
             context.getSource().sendMessage(new ChatComponentText(ChatColor.RED + "投票が開始されていません"), false);
             return 0;
@@ -108,7 +108,7 @@ public class PairCommand {
             context.getSource().sendMessage(new ChatComponentText(ChatColor.RED + "投票が開始されていません"), false);
             return 0;
         }
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         VoteSystem voteSystem = VoteSystem.getVoteInstance();
         CraftPlayer sender = (CraftPlayer)context.getSource().getBukkitSender();
         if (manager.hasPartner(sender)) {
@@ -125,7 +125,7 @@ public class PairCommand {
     }
 
     private static int listPairing(CommandContext<CommandListenerWrapper> context) {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "== 成立済みのペア =="), false);
         for (PairResult pair : manager.pairs()) {
             context.getSource().sendMessage(new ChatComponentText(pair.player1.getName() + ChatColor.GREEN + " <=> " + ChatColor.RESET + pair.player2.getName()), false);
@@ -137,7 +137,7 @@ public class PairCommand {
         if (!(context.getSource().getBukkitSender() instanceof CraftPlayer)) {
             return 0;
         }
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         CraftPlayer sender = (CraftPlayer)context.getSource().getBukkitSender();
         if (manager.hasPartner(sender)) {
             Player partner = manager.getPartner(sender);
@@ -149,14 +149,14 @@ public class PairCommand {
     }
 
     private static int resetPairing(CommandContext<CommandListenerWrapper> context) {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         manager.reset();
         Bukkit.broadcast(Component.text("成立済みのペアをすべて解消させました").color(NamedTextColor.GREEN));
         return 0;
     }
 
     private static int forcePairing(CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         CraftPlayer player1 = ArgumentEntity.e(context, "player1").getBukkitEntity();
         CraftPlayer player2 = ArgumentEntity.e(context, "player2").getBukkitEntity();
         if (player1.equals(player2)) {
@@ -178,7 +178,7 @@ public class PairCommand {
     }
 
     private static int randomPairing(CommandContext<CommandListenerWrapper> context) {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         List<Player> remaining = manager.remainingPlayers();
         Collections.shuffle(remaining);
         for (int i = 0; i + 1 < remaining.size(); i += 2) {
@@ -190,7 +190,7 @@ public class PairCommand {
     }
 
     private static int showRemaining(CommandContext<CommandListenerWrapper> context) {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         List<Player> remaining = manager.remainingPlayers();
         context.getSource().sendMessage(new ChatComponentText(ChatColor.GREEN + "== ぼっちのプレイヤー =="), false);
         for (Player player : remaining) {

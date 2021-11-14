@@ -16,7 +16,7 @@ public class VoteSystem {
     }
 
     public static void start() {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         instance = new VoteSystem(manager);
         started = true;
     }

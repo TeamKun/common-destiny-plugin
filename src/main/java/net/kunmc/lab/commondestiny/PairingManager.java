@@ -1,5 +1,6 @@
 package net.kunmc.lab.commondestiny;
 
+import net.kunmc.lab.commondestiny.config.ConfigManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,6 +18,9 @@ public class PairingManager {
     private List<PairResult> pairsCache = null;
 
     public void reset() {
+        for (PairResult pair : pairs()) {
+            dissolve(pair.player1, false);
+        }
         partners.clear();
         lastPartners.clear();
         pairsCache = null;
@@ -63,8 +67,9 @@ public class PairingManager {
                 player.sendMessage(Component.text(player1.getName() + " と " + player2.getName() + " がペアになったよ"));
             }
         }
-        CommonDestinyPlugin.getInstance().getGlowingManager().setGlowing(player1, player2, true);
-        CommonDestinyPlugin.getInstance().getGlowingManager().setGlowing(player2, player1, true);
+        GlowingManager glowingManager = CommonDestinyPlugin.getGlowingManager();
+        glowingManager.setGlowing(player1, player2, true);
+        glowingManager.setGlowing(player2, player1, true);
     }
 
     public void dissolve(Player player1, boolean broadcast) {
@@ -80,11 +85,12 @@ public class PairingManager {
             } else if (player.equals(player2)) {
                 player.sendMessage(Component.text(player1.getName() + " とのペアを解散したよ"));
             } else if (broadcast) {
-                player.sendMessage(Component.text(player1.getName() + " と " + player2.getName() + " をかいさんさせたよ"));
+                player.sendMessage(Component.text(player1.getName() + " と " + player2.getName() + " を解散させたよ"));
             }
         }
-        CommonDestinyPlugin.getInstance().getGlowingManager().setGlowing(player1, player2, false);
-        CommonDestinyPlugin.getInstance().getGlowingManager().setGlowing(player2, player1, false);
+        GlowingManager glowingManager = CommonDestinyPlugin.getGlowingManager();
+        glowingManager.setGlowing(player1, player2, false);
+        glowingManager.setGlowing(player2, player1, false);
     }
 
     public boolean isPair(Player player1, Player player2) {

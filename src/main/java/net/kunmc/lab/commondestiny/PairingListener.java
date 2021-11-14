@@ -21,7 +21,7 @@ public class PairingListener implements Listener {
     private final Map<Player, BukkitTask> differentWorldTimers = new HashMap<>();
 
     private void startDifferentWorldTimer(Player player1, Player player2) {
-        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
         long differentWorldTimer = configManager.getDifferentWorldTimer();
         BukkitTask task = Bukkit.getScheduler().runTaskLater(CommonDestinyPlugin.getInstance(), () -> {
             if (configManager.isEnabled()) {
@@ -44,7 +44,7 @@ public class PairingListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         Player player = event.getPlayer();
         Player lastPartner = manager.getLastPartner(player);
         if (lastPartner == null) {
@@ -58,7 +58,7 @@ public class PairingListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         Player player = event.getPlayer();
         if (VoteSystem.isVoteStarted()) {
             VoteSystem voteSystem = VoteSystem.getVoteInstance();
@@ -71,11 +71,11 @@ public class PairingListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         if (!configManager.isEnabled()) {
             return;
         }
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
         Player player = event.getEntity();
         if (!manager.hasPartner(player)) {
             return;
@@ -88,11 +88,11 @@ public class PairingListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
         if (!configManager.isEnabled()) {
             return;
         }
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         Player player = event.getPlayer();
         if (!manager.hasPartner(player)) {
             return;
@@ -105,11 +105,11 @@ public class PairingListener implements Listener {
 
     @EventHandler
     public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
-        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
         if (!configManager.isEnabled()) {
             return;
         }
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         Player player = event.getPlayer();
         if (!manager.hasPartner(player)) {
             return;
@@ -124,11 +124,11 @@ public class PairingListener implements Listener {
 
     @EventHandler
     public void onTick(ServerTickStartEvent event) {
-        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         if (!configManager.isEnabled()) {
             return;
         }
-        PairingManager manager = CommonDestinyPlugin.getInstance().getPairingManager();
         double range = configManager.getRange();
         for (PairResult pair : manager.pairs()) {
             if (pair.player1.isDead() || pair.player2.isDead()) {

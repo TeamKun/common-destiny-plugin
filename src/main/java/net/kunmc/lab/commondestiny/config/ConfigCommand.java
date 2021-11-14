@@ -29,14 +29,14 @@ public class ConfigCommand {
     }
 
     private static int get(CommandContext<CommandListenerWrapper> context, String path) {
-        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
         String value = configManager.get(path);
         context.getSource().sendMessage(new ChatComponentText(value), false);
         return 0;
     }
 
     private static int set(CommandContext<CommandListenerWrapper> context, String path) {
-        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
         String value = StringArgumentType.getString(context, "value");
         boolean result = configManager.setConfig(path, value);
         if (result) {
@@ -48,7 +48,7 @@ public class ConfigCommand {
     }
 
     private static int reload(CommandContext<CommandListenerWrapper> context) {
-        ConfigManager configManager = CommonDestinyPlugin.getInstance().getConfigManager();
+        ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
         configManager.load();
         context.getSource().sendMessage(new ChatComponentText("コンフィグをリロードしました"), false);
         return 0;

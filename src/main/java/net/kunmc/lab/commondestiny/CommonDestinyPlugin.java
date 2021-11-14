@@ -11,15 +11,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class CommonDestinyPlugin extends JavaPlugin {
     private static CommonDestinyPlugin instance;
     private PairingManager pairingManager;
-    private GlowingManager glowingManager;
     private ConfigManager configManager;
+    private GlowingManager glowingManager;
 
     @Override
     public void onEnable() {
         instance = this;
         pairingManager = new PairingManager();
-        glowingManager = new GlowingManager();
         configManager = new ConfigManager();
+        glowingManager = new GlowingManager(pairingManager);
         configManager.load();
         CommandDispatcher<CommandListenerWrapper> dispatcher = ((CraftServer)Bukkit.getServer()).getServer().vanillaCommandDispatcher.a();
         PairCommand.register(dispatcher);
@@ -34,15 +34,15 @@ public final class CommonDestinyPlugin extends JavaPlugin {
         return instance;
     }
 
-    public PairingManager getPairingManager() {
-        return pairingManager;
+    public static PairingManager getPairingManager() {
+        return getInstance().pairingManager;
     }
 
-    public GlowingManager getGlowingManager() {
-        return glowingManager;
+    public static GlowingManager getGlowingManager() {
+        return getInstance().glowingManager;
     }
 
-    public ConfigManager getConfigManager() {
-        return configManager;
+    public static ConfigManager getConfigManager() {
+        return getInstance().configManager;
     }
 }
