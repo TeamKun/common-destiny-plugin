@@ -60,10 +60,6 @@ public class PairingListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         PairingManager manager = CommonDestinyPlugin.getPairingManager();
         Player player = event.getPlayer();
-        if (VoteSystem.isVoteStarted()) {
-            VoteSystem voteSystem = VoteSystem.getVoteInstance();
-            voteSystem.remove(player);
-        }
         if (manager.hasPartner(player)) {
             manager.dissolve(player, true);
         }

@@ -1,8 +1,13 @@
 package net.kunmc.lab.commondestiny;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
+import javax.inject.Named;
 import java.util.*;
 
 public class VoteSystem {
@@ -10,19 +15,31 @@ public class VoteSystem {
     private static boolean started;
     private final PairingManager manager;
     private final Map<Player, Player> votes = new HashMap<>();
+    private final Map<Player, Set<Player>> votesRev = new HashMap<>();
+    private final VoteListener listener;
 
     private VoteSystem(PairingManager manager) {
         this.manager = manager;
+        this.listener = new VoteListener(this);
+        Bukkit.getPluginManager().registerEvents(listener, CommonDestinyPlugin.getInstance());
     }
 
     public static void start() {
         PairingManager manager = CommonDestinyPlugin.getPairingManager();
         instance = new VoteSystem(manager);
         started = true;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.playerListName(Component.text("× ", NamedTextColor.GRAY).append(player.displayName().color(NamedTextColor.WHITE)));
+        }
     }
 
     public static void end() {
+        HandlerList.unregisterAll(instance.listener);
+        instance = null;
         started = false;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.playerListName(player.displayName());
+        }
     }
 
     public static VoteSystem getVoteInstance() {
@@ -33,17 +50,8 @@ public class VoteSystem {
         return started;
     }
 
-    public void remove(Player removed) {
-        List<Player> removeVote = new ArrayList<>();
-        for (Map.Entry<Player, Player> entry : votes.entrySet()) {
-            if (entry.getValue().equals(removed)) {
-                Player player = entry.getKey();
-                player.sendMessage(ChatColor.GREEN + "投票先のプレイヤーがログアウトしました 再度投票してください");
-                removeVote.add(player);
-            }
-        }
-        votes.remove(removed);
-        removeVote.forEach(votes::remove);
+    public Set<Player> votedPlayers(Player dest) {
+        return votesRev.containsKey(dest) ? Collections.unmodifiableSet(votesRev.get(dest)) : Collections.emptySet();
     }
 
     public List<PairResult> matchResults() {
@@ -70,5 +78,21 @@ public class VoteSystem {
             throw new IllegalStateException();
         }
         votes.put(from, to);
+        votesRev.computeIfAbsent(to, key -> new HashSet<>()).add(from);
+        from.playerListName(Component.text("✓ ", NamedTextColor.GOLD).append(from.displayName().color(NamedTextColor.WHITE)));
+    }
+
+    public void unvote(Player player) {
+        Player dest = votes.remove(player);
+        Set<Player> set = votesRev.get(dest);
+        set.remove(player);
+        if (set.isEmpty()) {
+            votesRev.remove(dest);
+        }
+        player.playerListName(Component.text("× ", NamedTextColor.GRAY).append(player.displayName().color(NamedTextColor.WHITE)));
+    }
+
+    public boolean isVoted(Player player) {
+        return votes.containsKey(player);
     }
 }
