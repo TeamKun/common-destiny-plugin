@@ -19,7 +19,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import javax.inject.Named;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

@@ -1,6 +1,5 @@
 package net.kunmc.lab.commondestiny;
 
-import net.kunmc.lab.commondestiny.config.ConfigManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

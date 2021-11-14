@@ -24,7 +24,7 @@ public class PairingListener implements Listener {
         ConfigManager configManager = CommonDestinyPlugin.getConfigManager();
         long differentWorldTimer = configManager.getDifferentWorldTimer();
         BukkitTask task = Bukkit.getScheduler().runTaskLater(CommonDestinyPlugin.getInstance(), () -> {
-            if (configManager.isEnabled()) {
+            if (configManager.isEnabled() && !player1.isDead()) {
                 player1.setHealth(0);
             }
             stopDifferentWorldTimer(player1, player2);
