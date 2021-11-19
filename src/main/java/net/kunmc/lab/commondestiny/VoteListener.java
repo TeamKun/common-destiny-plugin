@@ -28,7 +28,10 @@ public class VoteListener implements Listener {
             voteCanceled.remove(player.getUniqueId());
             player.sendMessage(ChatColor.RED + "投票期間中にログアウトしたため投票がキャンセルされました 再度投票してください");
         }
-        player.playerListName(Component.text("× ", NamedTextColor.GRAY).append(player.displayName().color(NamedTextColor.WHITE)));
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
+        if (!manager.hasPartner(player)) {
+            player.playerListName(Component.text("× ", NamedTextColor.GRAY).append(player.displayName().color(NamedTextColor.WHITE)));
+        }
     }
 
     @EventHandler

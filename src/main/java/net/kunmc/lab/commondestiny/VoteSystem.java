@@ -27,7 +27,9 @@ public class VoteSystem {
         instance = new VoteSystem(manager);
         started = true;
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.playerListName(Component.text("× ", NamedTextColor.GRAY).append(player.displayName().color(NamedTextColor.WHITE)));
+            if (!manager.hasPartner(player)) {
+                player.playerListName(Component.text("× ", NamedTextColor.GRAY).append(player.displayName().color(NamedTextColor.WHITE)));
+            }
         }
     }
 
@@ -35,8 +37,11 @@ public class VoteSystem {
         HandlerList.unregisterAll(instance.listener);
         instance = null;
         started = false;
+        PairingManager manager = CommonDestinyPlugin.getPairingManager();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.playerListName(player.displayName());
+            if (!manager.hasPartner(player)) {
+                player.playerListName(player.displayName());
+            }
         }
     }
 

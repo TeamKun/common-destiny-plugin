@@ -92,12 +92,12 @@ public class PairCommand {
         if (results.isEmpty()) {
             Bukkit.broadcast(Component.text("ペア成立なし", NamedTextColor.GREEN));
         }
+        VoteSystem.end();
         for (PairResult pair : results) {
             if (pair.matched()) {
                 manager.form(pair.player1, pair.player2, false);
             }
         }
-        VoteSystem.end();
         return 0;
     }
 
